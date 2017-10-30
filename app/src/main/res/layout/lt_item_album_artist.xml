@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="?attr/selectableItemBackground"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintDimensionRatio="H,1:1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp">
+
+        <RelativeLayout
+            android:background="#606060"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/img_album_artist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:background="@color/transparent_white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_75sdp">
+
+                <TextView
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:id="@+id/text_album_name_or_artist_name"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:id="@+id/text_artist_name_or_number_of_song_album"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:textSize="@dimen/_13ssp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

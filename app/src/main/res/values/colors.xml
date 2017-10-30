@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#170118</color>
+    <color name="colorBlack">#FF404040</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorTextTitle">#7A045A</color>
+    <color name="colorTextDetail">#450D3A</color>
+    <color name="bottomColor">#330835</color>
+    <color name="colorWhite">#fff</color>
+    <color name="colorBackGroundSong">#dedede</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="grey">#FFCCCCCC</color>
+    <color name="transparent_white">#4cffffff</color>
+</resources>

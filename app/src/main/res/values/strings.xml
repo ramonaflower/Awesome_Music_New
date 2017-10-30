@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Awesome Music</string>
+    <string name="name_tab_song">Songs</string>
+    <string name="name_tab_album">Albums</string>
+    <string name="name_tab_artist">Artists</string>
+    <string name="permission_denied">Permission Denied!</string>
+    <string name="selection">!= 0</string>
+    <string name="no_audio_file">Dont have any audio file in your device!</string>
+    <string name="number_of_album_artist">%2$d Album | %2$d Song</string>
+</resources>
