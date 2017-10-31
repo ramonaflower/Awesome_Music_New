@@ -20,7 +20,8 @@ public class Constant {
     public static final String IS_PLAYING = "is_playing";
     public static final String INDEX_SONG_TO_TRANSPARENT_FRAGMENT = "index_song_to_transparent_fragment";
     public static final String PLAYSONG_TO_TRANSPARENT_FRAGMENT = "playsong_to_transparent_fragment";
-
+    public static final String ALBUM_ENTITY = "album_entity";
+    public static final String ARTIST_ENTITY = "artist_entity";
     public static final String ACTION_PLAY_MUSIC = "action_play_music";
     public static final String ACTION_PAUSE_MUSIC = "action_pause_music";
 

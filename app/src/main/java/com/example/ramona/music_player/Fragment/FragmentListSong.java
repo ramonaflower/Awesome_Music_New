@@ -13,6 +13,7 @@ import com.example.ramona.music_player.Activity.PlaySong;
 import com.example.ramona.music_player.Adapter.AdapterRecyclerViewListSong;
 import com.example.ramona.music_player.Constant;
 import com.example.ramona.music_player.Entities.SongEntities;
+import com.example.ramona.music_player.Interface.ClickListener;
 import com.example.ramona.music_player.R;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class FragmentListSong extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.lt_recyclerview, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_list_song);
+        mRecyclerView = view.findViewById(R.id.recycler_view_list_song);
         if (getArguments() != null) {
             mList = getArguments().getParcelableArrayList(Constant.SONG_TO_FRAGMENT);
         }
@@ -48,7 +49,7 @@ public class FragmentListSong extends Fragment {
     }
 
     private void initEvent() {
-        mAdapter.SetOnItemClickListener(new AdapterRecyclerViewListSong.ClickListener() {
+        mAdapter.SetOnItemClickListener(new ClickListener() {
             @Override
             public void OnItemClick(int position) {
                 Intent intent = new Intent(getActivity(), PlaySong.class);

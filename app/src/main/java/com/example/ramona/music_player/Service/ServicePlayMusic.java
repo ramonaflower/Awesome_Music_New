@@ -41,6 +41,7 @@ public class ServicePlayMusic extends Service {
     private boolean mIsRelease = true;
     private Random mRan = new Random();
     private Intent mIntent;
+    private Notification mNotification;
 
     private static final int NOTIFICATION_ID_CUSTOM_BIG = 9;
 
@@ -195,8 +196,8 @@ public class ServicePlayMusic extends Service {
         compat.setCustomContentView(remoteViews);
         compat.setVisibility(Notification.VISIBILITY_PUBLIC);
 
-        Notification notification = compat.build();
-        startForeground(NOTIFICATION_ID_CUSTOM_BIG, notification);
+        mNotification = compat.build();
+        startForeground(NOTIFICATION_ID_CUSTOM_BIG, mNotification);
     }
 
     public void getListSong(List<SongEntities> list) {
@@ -216,9 +217,16 @@ public class ServicePlayMusic extends Service {
 
     public void pause() {
         mMediaPlayer.pause();
+
         mIntent = new Intent();
         mIntent.setAction(Constant.ACTION_PAUSE_MUSIC);
         sendBroadcast(mIntent);
+    }
+
+    public void stopForeGround(){
+        if (!isPlayingMusic()){
+            stopForeground(true);
+        }
     }
 
     public void seekTo(int pos) {

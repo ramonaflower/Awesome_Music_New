@@ -80,7 +80,7 @@ public class FragmentPlaySongTransparent extends Fragment implements AdapterTran
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new AdapterTransparentListSong(mList, mIndex, mCheck, this);
         mRecyclerView.setAdapter(mAdapter);
-
+        mRecyclerView.scrollToPosition(mIndex);
         return view;
     }
 

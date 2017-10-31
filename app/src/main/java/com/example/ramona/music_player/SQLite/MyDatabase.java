@@ -57,16 +57,16 @@ public class MyDatabase extends SQLiteOpenHelper {
 
     }
 
-    public int getSongCount(){
+    public int getSongCount() {
         String countQuery = "SELECT  * FROM " + TABLE_SONG;
-        SQLiteDatabase db =this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         db.close();
         return count;
     }
 
-    public boolean AddSong(SongEntities song){
+    public boolean AddSong(SongEntities song) {
         boolean success = false;
         int count = getSongCount();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -80,26 +80,20 @@ public class MyDatabase extends SQLiteOpenHelper {
         values.put(COLUMN_ALBUM_ID, song.getmAlbumID());
         values.put(COLUMN_ARTIST_ID, song.getmArtistID());
         db.insert(TABLE_SONG, null, values);
-        if (count< getSongCount()){
+        if (count < getSongCount()) {
             success = true;
         }
-        Log.e("Add To DB ", success+"");
+        Log.e("Add To DB ", success + "");
         db.close();
         return success;
     }
 
-    public void AddListSong(List<SongEntities> listSong){
-        for (int i = 0; i<listSong.size(); i++){
-            AddSong(listSong.get(i));
-        }
-    }
-
-    public SongEntities getSongByID(String id){
+    public SongEntities getSongByID(String id) {
         SongEntities entities = new SongEntities();
         String query = "SELECT  * FROM " + TABLE_SONG + " WHERE " + COLUMN_SONG_ID + " = " + id;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor!=null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             entities.setmSongID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_ID))));
             entities.setmSongName(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_NAME)));
             entities.setmAlbumName(cursor.getString(cursor.getColumnIndex(COLUMN_ALBUM_NAME)));
@@ -114,12 +108,12 @@ public class MyDatabase extends SQLiteOpenHelper {
         return entities;
     }
 
-    public List<SongEntities> getAllSong(){
+    public List<SongEntities> getAllSong() {
         List<SongEntities> listUser = new ArrayList<SongEntities>();
         String query = "SELECT  * FROM " + TABLE_SONG;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 SongEntities entities = new SongEntities();
                 entities.setmSongID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_ID))));
@@ -138,14 +132,56 @@ public class MyDatabase extends SQLiteOpenHelper {
         return listUser;
     }
 
-    public boolean DeleteSong(String s){
+    public boolean DeleteSong(String s) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_SONG, COLUMN_SONG_ID + " = " + s, null) > 0;
     }
 
-    public void DeleteListSong(List<SongEntities> list){
-        for (int i = 0; i < list.size(); i++) {
-            DeleteSong(list.get(i).getmSongID() + "");
+    public List<SongEntities> getListSongByAlbumID(String id) {
+        List<SongEntities> list = new ArrayList<>();
+        String query = "SELECT  * FROM " + TABLE_SONG + " WHERE " + COLUMN_ALBUM_ID + " = " + id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                SongEntities entities = new SongEntities();
+                entities.setmSongID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_ID))));
+                entities.setmSongName(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_NAME)));
+                entities.setmAlbumName(cursor.getString(cursor.getColumnIndex(COLUMN_ALBUM_NAME)));
+                entities.setmArtistName(cursor.getString(cursor.getColumnIndex(COLUMN_ARTIST_NAME)));
+                entities.setmDuration(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_DURATION)));
+                entities.setmSongPath(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_PATH)));
+                entities.setmAlbumID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_ALBUM_ID))));
+                entities.setmArtistID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_ARTIST_ID))));
+                list.add(entities);
+            } while (cursor.moveToNext());
+            cursor.close();
         }
+        db.close();
+        return list;
+    }
+
+    public List<SongEntities> getListSongByArtistID(String id) {
+        List<SongEntities> list = new ArrayList<>();
+        String query = "SELECT  * FROM " + TABLE_SONG + " WHERE " + COLUMN_ARTIST_ID + " = " + id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                SongEntities entities = new SongEntities();
+                entities.setmSongID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_ID))));
+                entities.setmSongName(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_NAME)));
+                entities.setmAlbumName(cursor.getString(cursor.getColumnIndex(COLUMN_ALBUM_NAME)));
+                entities.setmArtistName(cursor.getString(cursor.getColumnIndex(COLUMN_ARTIST_NAME)));
+                entities.setmDuration(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_DURATION)));
+                entities.setmSongPath(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_PATH)));
+                entities.setmAlbumID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_ALBUM_ID))));
+                entities.setmArtistID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_ARTIST_ID))));
+                list.add(entities);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return list;
     }
 }

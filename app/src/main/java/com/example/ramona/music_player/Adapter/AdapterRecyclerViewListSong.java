@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ramona.music_player.Entities.SongEntities;
+import com.example.ramona.music_player.Interface.ClickListener;
 import com.example.ramona.music_player.R;
 
 import java.util.List;
@@ -72,11 +73,5 @@ public class AdapterRecyclerViewListSong extends RecyclerView.Adapter<AdapterRec
 
     public void SetOnItemClickListener(ClickListener clickListener) {
         mClickListener = clickListener;
-    }
-
-    public interface ClickListener {
-        void OnItemClick(int position);
-
-        void OnLongItemClick(int position);
     }
 }

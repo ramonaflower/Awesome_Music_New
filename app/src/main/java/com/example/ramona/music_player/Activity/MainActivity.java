@@ -283,8 +283,6 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_detail :
-                Intent intent = new Intent(MainActivity.this, Temp.class);
-                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -325,10 +323,8 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
             public void run() {
                 if (!mIsBound) {
                     mHandler.postDelayed(this, 100);
-                    Log.e("Nani", "???");
                 } else {
                     createFragmentIfNeed();
-                    Log.e("What", "???");
                 }
             }
         };
@@ -336,10 +332,21 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
         mHandler.post(mRunable);
     }
 
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if (mIsBound) {
+//            mService.stopForeGround();
+//            unbindService(mConnection);
+//            mIsBound = false;
+//        }
+//    }
+
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         if (mIsBound) {
+            mService.stopForeGround();
             unbindService(mConnection);
             mIsBound = false;
         }

@@ -24,9 +24,13 @@
             android:theme="@style/AppThemeNoActionbar" />
 
         <service android:name="com.example.ramona.music_player.Service.ServicePlayMusic" />
-        <activity android:name=".Activity.AlbumDetail"/>
-        <activity android:name=".Activity.ArtistDetail"/>
-        <activity android:name=".Activity.Temp"/>
+
+        <activity
+            android:name=".Activity.AlbumDetail"
+            android:theme="@style/AppThemeLightNoActionbar" />
+        <activity android:name=".Activity.ArtistDetail"
+            android:theme="@style/AppThemeLightNoActionbar"/>
+        <activity android:name=".Activity.Temp" />
     </application>
 
 </manifest>
