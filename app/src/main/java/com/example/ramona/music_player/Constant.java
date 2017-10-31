@@ -15,8 +15,8 @@ public class Constant {
     public static final String ARTIST_NAME_TO_FRAG_PLAYCONTROL = "artist_name_to_frag_playcontrol";
     public static final String IS_PLAY_PAUSE_TO_FRAG_PLAYCONTROL = "is_play_pause_to_frag_playcontrol";
     public static final String BROADCAST_UPDATE_UI = "broad_cast_update_ui";
-    public static final String UPDATE_TITLE_SONG = "update_title_song";
-    public static final String UPDATE_ARTIST_NAME = "update_artist_name";
+    public static final String UPDATE_SONG_INFO = "update_title_song";
+    public static final String UPDATE_INDEX = "update_index";
     public static final String IS_PLAYING = "is_playing";
     public static final String INDEX_SONG_TO_TRANSPARENT_FRAGMENT = "index_song_to_transparent_fragment";
     public static final String PLAYSONG_TO_TRANSPARENT_FRAGMENT = "playsong_to_transparent_fragment";
@@ -25,4 +25,7 @@ public class Constant {
     public static final String ACTION_PLAY_MUSIC = "action_play_music";
     public static final String ACTION_PAUSE_MUSIC = "action_pause_music";
 
+    public static final String NOTIFY_PREVIOUS = "notify_previous";
+    public static final String NOTIFY_PLAY_PAUSE = "notify_play_pause";
+    public static final String NOTIFY_NEXT = "notify_next";
 }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.ramona.music_player.Activity.PlaySong;
 import com.example.ramona.music_player.Constant;
+import com.example.ramona.music_player.Entities.SongEntities;
 import com.example.ramona.music_player.Interface.PlayControl;
 import com.example.ramona.music_player.R;
 
@@ -38,14 +39,17 @@ public class FragmentPlaySong extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Constant.BROADCAST_UPDATE_UI)) {
                 Bundle bundle = intent.getExtras();
-                mText_title.setText(bundle.getString(Constant.UPDATE_TITLE_SONG));
-                mText_author.setText(bundle.getString(Constant.UPDATE_ARTIST_NAME));
-                mIsPlaying = bundle.getBoolean(Constant.IS_PLAYING);
-                updatePlayPauseBtn();
+                if (bundle!=null){
+                    SongEntities entities = bundle.getParcelable(Constant.UPDATE_SONG_INFO);
+                    mText_title.setText(entities.getmSongName());
+                    mText_author.setText(entities.getmArtistName());
+                    mIsPlaying = bundle.getBoolean(Constant.IS_PLAYING);
+                    updatePlayPauseBtn();
+                }
             }
         }
     };
-    PlayControl mControl;
+    private PlayControl mControl;
 
     @Override
     public void onAttach(Context context) {

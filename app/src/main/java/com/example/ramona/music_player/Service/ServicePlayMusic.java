@@ -1,13 +1,14 @@
 package com.example.ramona.music_player.Service;
 
 
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
@@ -42,6 +43,33 @@ public class ServicePlayMusic extends Service {
     private Random mRan = new Random();
     private Intent mIntent;
     private Notification mNotification;
+    private NotificationManager mNotificationManager;
+    private RemoteViews mRemoteViews;
+    private NotificationCompat.Builder mNotificationCompat;
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Constant.NOTIFY_PLAY_PAUSE:
+                    if (isPlayingMusic()) {
+                        pause();
+                        updatePlayPauseBtnNotification();
+                    } else {
+                        play();
+                        updatePlayPauseBtnNotification();
+                    }
+                    break;
+                case Constant.NOTIFY_NEXT:
+                    playNext();
+                    updatePlayPauseBtnNotification();
+                    break;
+                case Constant.NOTIFY_PREVIOUS:
+                    playPrevious();
+                    updatePlayPauseBtnNotification();
+                    break;
+            }
+        }
+    };
 
     private static final int NOTIFICATION_ID_CUSTOM_BIG = 9;
 
@@ -50,6 +78,11 @@ public class ServicePlayMusic extends Service {
         super.onCreate();
         mMediaPlayer = new MediaPlayer();
         initMediaPlayer();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.NOTIFY_PREVIOUS);
+        filter.addAction(Constant.NOTIFY_PLAY_PAUSE);
+        filter.addAction(Constant.NOTIFY_NEXT);
+        registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -57,6 +90,7 @@ public class ServicePlayMusic extends Service {
         super.onDestroy();
         mMediaPlayer.stop();
         mMediaPlayer.release();
+        unregisterReceiver(mReceiver);
         mIsRelease = true;
     }
 
@@ -84,6 +118,7 @@ public class ServicePlayMusic extends Service {
                 mediaPlayer.reset();
                 if (mIsRepeat) {
                     playSong();
+
                 } else {
                     playNext();
                 }
@@ -168,36 +203,69 @@ public class ServicePlayMusic extends Service {
 
     public void sendBroadCastInfoSong() {
         mIntent = new Intent();
-        mIntent.putExtra(Constant.UPDATE_TITLE_SONG, getSongName());
-        mIntent.putExtra(Constant.UPDATE_ARTIST_NAME, getArtistName());
         mIntent.putExtra(Constant.IS_PLAYING, isPlayingMusic());
+        mIntent.putExtra(Constant.UPDATE_SONG_INFO, mListSong.get(mIndex));
+        mIntent.putExtra(Constant.UPDATE_INDEX, mIndex);
         mIntent.setAction(Constant.BROADCAST_UPDATE_UI);
         sendBroadcast(mIntent);
     }
 
-    public void notification(){
-        RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.lt_small_notifycation);
-        remoteViews.setTextViewText(R.id.small_song_name, getSongName());
-        remoteViews.setTextViewText(R.id.small_artist_name, getArtistName());
-        remoteViews.setImageViewResource(R.id.small_icon, R.drawable.ic_music);
+    public void notification() {
+        if (mRemoteViews == null) {
+            mRemoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.lt_small_notifycation);
+            mRemoteViews.setTextViewText(R.id.small_song_name, getSongName());
+            mRemoteViews.setTextViewText(R.id.small_artist_name, getArtistName());
+            mRemoteViews.setImageViewResource(R.id.small_icon, R.drawable.ic_music);
 
-        NotificationCompat.Builder compat = new NotificationCompat.Builder(this);
-        NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationCompat = new NotificationCompat.Builder(this);
+            mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            setNotificationListener();
+            updatePlayPauseBtnNotification();
+            Intent notiIntent = new Intent(this, PlaySong.class);
+            notiIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        Intent notiIntent = new Intent(this, PlaySong.class);
-        notiIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notiIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notiIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mNotificationCompat.setOngoing(true);
+            mNotificationCompat.setContentIntent(pendingIntent);
+            mNotificationCompat.setSmallIcon(R.drawable.ic_notify);
+            mNotificationCompat.setCustomContentView(mRemoteViews);
+            mNotificationCompat.setVisibility(Notification.VISIBILITY_PUBLIC);
 
-        compat.setOngoing(true);
-        compat.setContentIntent(pendingIntent);
-        compat.setSmallIcon(R.drawable.ic_notify);
-        compat.setCustomContentView(remoteViews);
-        compat.setVisibility(Notification.VISIBILITY_PUBLIC);
+            mNotification = mNotificationCompat.build();
+            startForeground(NOTIFICATION_ID_CUSTOM_BIG, mNotification);
+        } else {
+            mRemoteViews.setTextViewText(R.id.small_song_name, getSongName());
+            mRemoteViews.setTextViewText(R.id.small_artist_name, getArtistName());
+            mNotificationManager.notify(NOTIFICATION_ID_CUSTOM_BIG, mNotification);
+        }
 
-        mNotification = compat.build();
-        startForeground(NOTIFICATION_ID_CUSTOM_BIG, mNotification);
+    }
+
+    public void updatePlayPauseBtnNotification() {
+        if (isPlayingMusic()) {
+            mRemoteViews.setImageViewResource(R.id.notify_play_pause, R.drawable.ic_pause_white);
+        } else {
+            mRemoteViews.setImageViewResource(R.id.notify_play_pause, R.drawable.ic_play_arrow_white);
+        }
+        mNotification = mNotificationCompat.build();
+        mNotificationManager.notify(NOTIFICATION_ID_CUSTOM_BIG, mNotification);
+    }
+
+    private void setNotificationListener() {
+        Intent previous = new Intent(Constant.NOTIFY_PREVIOUS);
+        Intent next = new Intent(Constant.NOTIFY_NEXT);
+        Intent play = new Intent(Constant.NOTIFY_PLAY_PAUSE);
+
+        PendingIntent pPrevious = PendingIntent.getBroadcast(getApplicationContext(), 0, previous, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.notify_previous, pPrevious);
+
+        PendingIntent pPlay = PendingIntent.getBroadcast(getApplicationContext(), 0, play, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.notify_play_pause, pPlay);
+
+        PendingIntent pNext = PendingIntent.getBroadcast(getApplicationContext(), 0, next, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.notify_next, pNext);
     }
 
     public void getListSong(List<SongEntities> list) {
@@ -223,8 +291,8 @@ public class ServicePlayMusic extends Service {
         sendBroadcast(mIntent);
     }
 
-    public void stopForeGround(){
-        if (!isPlayingMusic()){
+    public void stopForeGround() {
+        if (!isPlayingMusic()) {
             stopForeground(true);
         }
     }

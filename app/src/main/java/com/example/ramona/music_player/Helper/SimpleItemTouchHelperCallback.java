@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 /**
  * Created by Ramona on 10/26/2017.
@@ -15,17 +16,16 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter mAdapter;
 
+    private int dragFrom = -1;
+    private int temp = 0;
+    private int dragTo = -1;
+
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         mAdapter = adapter;
     }
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
-    }
-
-    @Override
-    public boolean isItemViewSwipeEnabled() {
         return true;
     }
 
@@ -38,7 +38,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             return makeMovementFlags(dragFlags, swipeFlags);
         } else {
             final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-            final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+            final int swipeFlags = 0;
             return makeMovementFlags(dragFlags, swipeFlags);
         }
     }
@@ -48,16 +48,22 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (source.getItemViewType() != target.getItemViewType()) {
             return false;
         }
+        if (dragFrom == -1){
+            temp = source.getAdapterPosition();
+            dragFrom = temp;
+        } else {
+            temp = source.getAdapterPosition();
+        }
+
+        dragTo = target.getAdapterPosition();
 
         // Notify the adapter of the move
-        mAdapter.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
+        mAdapter.onItemMove(temp, dragTo);
         return true;
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
-        // Notify the adapter of the dismissal
-        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
     }
 
     @Override
@@ -97,5 +103,11 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }
+        if (dragFrom != -1 && dragTo != -1) {
+            Log.e("vào", "chưa");
+            mAdapter.onItemMoved(dragFrom, dragTo);
+        }
+        dragFrom = dragTo = -1;
     }
+
 }

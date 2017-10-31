@@ -38,7 +38,6 @@ public class FragmentListArtist extends Fragment {
         if (getArguments() != null) {
             mList = getArguments().getParcelableArrayList(Constant.ARTIST_TO_FRAGMENT);
         }
-        Log.e("List Album", mList.size() + "");
         mLayoutManager = new GridLayoutManager(this.getActivity(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new AdapterRecyclerViewListArtist(mList, this.getActivity());

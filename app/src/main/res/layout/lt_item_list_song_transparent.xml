@@ -17,8 +17,7 @@
             android:id="@+id/equalizer_view"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_30sdp"
-            custom:foregroundColor="@color/colorWhite"
-            custom:animDuration="3500"/>
+            custom:foregroundColor="@color/colorWhite" />
         <TextView
             android:id="@+id/text_song_index"
             android:gravity="center"
@@ -57,8 +56,8 @@
         </LinearLayout>
         <ImageView
             android:id="@+id/img_move"
-            android:src="@drawable/ic_more"
-            android:layout_weight="1"
+            android:src="@drawable/ic_toc"
+            android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
     </LinearLayout>

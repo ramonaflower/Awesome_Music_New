@@ -62,8 +62,9 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
             if (intent.getAction().equals(Constant.BROADCAST_UPDATE_UI)) {
                 Bundle bundle = intent.getExtras();
                 if (bundle != null) {
-                    mToolbar.setTitle(bundle.getString(Constant.UPDATE_TITLE_SONG));
-                    mToolbar.setSubtitle(bundle.getString(Constant.UPDATE_ARTIST_NAME));
+                    SongEntities entities = bundle.getParcelable(Constant.UPDATE_SONG_INFO);
+                    mToolbar.setTitle(entities.getmSongName());
+                    mToolbar.setSubtitle(entities.getmArtistName());
                 }
             }
         }
@@ -309,6 +310,12 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
         mServicePlayMusic.playSong();
         upDatePlayPauseBtn();
         updateSeekBar();
+    }
+
+    @Override
+    public void updateListSong(List<SongEntities> list, int index) {
+        mServicePlayMusic.getListSong(list);
+        mServicePlayMusic.getIndex(index);
     }
 
     //    private boolean isMyServiceRunning(Class<?> serviceClass) {

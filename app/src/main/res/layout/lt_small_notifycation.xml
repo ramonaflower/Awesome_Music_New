@@ -39,16 +39,19 @@
         android:layout_width="0dp"
         android:layout_height="match_parent">
         <ImageView
+            android:id="@+id/notify_previous"
             android:src="@drawable/ic_skip_previous_white"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
         <ImageView
+            android:id="@+id/notify_play_pause"
             android:src="@drawable/ic_pause_white"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
         <ImageView
+            android:id="@+id/notify_next"
             android:src="@drawable/ic_skip_next_white"
             android:layout_weight="1"
             android:layout_width="0dp"

@@ -19,7 +19,9 @@ import com.example.ramona.music_player.Adapter.AdapterTransparentListSong;
 import com.example.ramona.music_player.Constant;
 import com.example.ramona.music_player.Entities.SongEntities;
 import com.example.ramona.music_player.Helper.OnStartDragListener;
+import com.example.ramona.music_player.Helper.SimpleItemTouchHelperCallback;
 import com.example.ramona.music_player.Interface.ClickFromTransparentToPlaySong;
+import com.example.ramona.music_player.Interface.ClickListener;
 import com.example.ramona.music_player.R;
 
 import java.util.ArrayList;
@@ -29,29 +31,37 @@ import java.util.List;
  * Created by Ramona on 10/20/2017.
  */
 
-public class FragmentPlaySongTransparent extends Fragment implements AdapterTransparentListSong.clickListener{
+public class FragmentPlaySongTransparent extends Fragment implements ClickListener, OnStartDragListener, AdapterTransparentListSong.updateChangeToFragment{
     private RecyclerView mRecyclerView;
     private AdapterTransparentListSong mAdapter;
     private LinearLayoutManager mLayoutManager;
     private List<SongEntities> mList = new ArrayList<>();
+    private ItemTouchHelper mItemTouchHelper;
     private int mIndex;
     private boolean mCheck;
     private ClickFromTransparentToPlaySong mToPlaySong;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Constant.ACTION_PLAY_MUSIC)){
-                mCheck = true;
-                mAdapter.updateCheck(mCheck);
+            if (intent.getAction().equals(Constant.BROADCAST_UPDATE_UI)){
+                Bundle bundle = intent.getExtras();
+                mAdapter.updateIndex(bundle.getInt(Constant.UPDATE_INDEX));
                 mAdapter.notifyDataSetChanged();
-                return;
             }
-            if (intent.getAction().equals(Constant.ACTION_PAUSE_MUSIC)){
-                mCheck =false;
-                mAdapter.updateCheck(mCheck);
-                mAdapter.notifyDataSetChanged();
-                return;
+            switch (intent.getAction()){
+                case Constant.ACTION_PLAY_MUSIC:
+                    mCheck = true;
+                    mAdapter.updateCheck(mCheck);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case Constant.ACTION_PAUSE_MUSIC:
+                    mCheck =false;
+                    mAdapter.updateCheck(mCheck);
+                    mAdapter.notifyDataSetChanged();
+                    break;
             }
+
+
         }
     };
     @Override
@@ -73,30 +83,56 @@ public class FragmentPlaySongTransparent extends Fragment implements AdapterTran
             mList = getArguments().getParcelableArrayList(Constant.PLAYSONG_TO_TRANSPARENT_FRAGMENT);
             mIndex = getArguments().getInt(Constant.INDEX_SONG_TO_TRANSPARENT_FRAGMENT);
             mCheck = getArguments().getBoolean(Constant.IS_PLAYING);
-            Log.e("Check", mList.size()+"");
         }
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AdapterTransparentListSong(mList, mIndex, mCheck, this);
+        mAdapter = new AdapterTransparentListSong(mList, mIndex, mCheck, this, this, this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.scrollToPosition(mIndex);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
         return view;
     }
 
+
     @Override
-    public void onClick(int position) {
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.BROADCAST_UPDATE_UI);
+        filter.addAction(Constant.ACTION_PLAY_MUSIC);
+        filter.addAction(Constant.ACTION_PAUSE_MUSIC);
+        getActivity().registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    public void OnItemClick(int position) {
         mToPlaySong.clickToPlaySong(position);
         mAdapter.updateIndex(position);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constant.ACTION_PLAY_MUSIC);
-        filter.addAction(Constant.ACTION_PAUSE_MUSIC);
-        getActivity().registerReceiver(mReceiver, filter);
+    public void OnLongItemClick(int position) {
+
     }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void getListUpdate(List<SongEntities> list, int index) {
+        mToPlaySong.updateListSong(list, index);
+    }
+
 }

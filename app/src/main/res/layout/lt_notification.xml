@@ -51,7 +51,6 @@
                 android:layout_height="match_parent" />
             <ImageView
                 android:id="@+id/btn_notify_play_pause"
-                android:src="@drawable/ic_play_arrow_white"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />

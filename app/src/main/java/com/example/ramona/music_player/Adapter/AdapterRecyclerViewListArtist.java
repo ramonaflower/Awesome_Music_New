@@ -43,7 +43,6 @@ public class AdapterRecyclerViewListArtist extends RecyclerView.Adapter<AdapterR
         int numberOfAlbum = entities.getmAlbumQuantity();
         holder.mTextArtistName.setText(entities.getmArtistName());
         holder.mTextDetail.setText(mContext.getString(R.string.number_of_album_artist, numberOfAlbum, numberOfSong));
-        holder.mImgArtist.setImageResource(R.drawable.ic_default_artist);
     }
 
     @Override
