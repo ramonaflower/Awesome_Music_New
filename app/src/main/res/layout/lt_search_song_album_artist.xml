@@ -26,9 +26,10 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:layout_weight="1"
         android:background="@color/colorWhite"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
 
         <LinearLayout
             android:background="@color/colorWhite"
@@ -41,7 +42,7 @@
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
                 <TextView
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -62,7 +63,7 @@
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
                 <TextView
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -72,7 +73,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_list_album"
                     android:background="@color/colorWhite"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                 </android.support.v7.widget.RecyclerView>
@@ -83,7 +84,7 @@
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
                 <TextView
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -93,11 +94,15 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_list_artist"
                     android:background="@color/colorWhite"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                 </android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <FrameLayout
+        android:id="@+id/replace_layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_55sdp"></FrameLayout>
 </LinearLayout>

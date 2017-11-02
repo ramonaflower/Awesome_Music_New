@@ -47,6 +47,9 @@ public class FragmentPlaySong extends Fragment {
                     updatePlayPauseBtn();
                 }
             }
+            switch (intent.getAction()){
+                case Constant.ACTION_PAUSE_MUSIC:
+            }
         }
     };
     private PlayControl mControl;
@@ -140,6 +143,8 @@ public class FragmentPlaySong extends Fragment {
         super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.BROADCAST_UPDATE_UI);
+        filter.addAction(Constant.ACTION_PAUSE_MUSIC);
+        filter.addAction(Constant.ACTION_PLAY_MUSIC);
         getActivity().registerReceiver(mReceiver, filter);
     }
 

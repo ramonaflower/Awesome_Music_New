@@ -68,6 +68,14 @@ public class ServicePlayMusic extends Service {
                     updatePlayPauseBtnNotification();
                     break;
             }
+            switch (intent.getAction()){
+                case Constant.ACTION_PAUSE_MUSIC:
+                    updatePlayPauseBtnNotification();
+                    break;
+                case Constant.ACTION_PLAY_MUSIC:
+                    updatePlayPauseBtnNotification();
+                    break;
+            }
         }
     };
 
@@ -219,8 +227,7 @@ public class ServicePlayMusic extends Service {
 
             mNotificationCompat = new NotificationCompat.Builder(this);
             mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            setNotificationListener();
-            updatePlayPauseBtnNotification();
+
             Intent notiIntent = new Intent(this, PlaySong.class);
             notiIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -232,7 +239,8 @@ public class ServicePlayMusic extends Service {
             mNotificationCompat.setSmallIcon(R.drawable.ic_notify);
             mNotificationCompat.setCustomContentView(mRemoteViews);
             mNotificationCompat.setVisibility(Notification.VISIBILITY_PUBLIC);
-
+            updatePlayPauseBtnNotification();
+            setNotificationListener();
             mNotification = mNotificationCompat.build();
             startForeground(NOTIFICATION_ID_CUSTOM_BIG, mNotification);
         } else {
