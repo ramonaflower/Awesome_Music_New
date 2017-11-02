@@ -70,9 +70,11 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
             switch (intent.getAction()) {
                 case Constant.ACTION_PAUSE_MUSIC:
                     upDatePlayPauseBtn();
+                    updateSeekBar();
                     break;
                 case Constant.ACTION_PLAY_MUSIC:
                     upDatePlayPauseBtn();
+                    updateSeekBar();
                     break;
             }
         }

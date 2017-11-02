@@ -164,8 +164,7 @@ public class ServicePlayMusic extends Service {
         }
         play();
         mIsRelease = false;
-        sendBroadCastInfoSong();
-        notification();
+
     }
 
     public void playNext() {
@@ -289,6 +288,8 @@ public class ServicePlayMusic extends Service {
         mIntent = new Intent();
         mIntent.setAction(Constant.ACTION_PLAY_MUSIC);
         sendBroadcast(mIntent);
+        sendBroadCastInfoSong();
+        notification();
     }
 
     public void pause() {
