@@ -67,6 +67,14 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
                     mToolbar.setSubtitle(entities.getmArtistName());
                 }
             }
+            switch (intent.getAction()) {
+                case Constant.ACTION_PAUSE_MUSIC:
+                    upDatePlayPauseBtn();
+                    break;
+                case Constant.ACTION_PLAY_MUSIC:
+                    upDatePlayPauseBtn();
+                    break;
+            }
         }
     };
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -280,6 +288,8 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
         super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.BROADCAST_UPDATE_UI);
+        filter.addAction(Constant.ACTION_PAUSE_MUSIC);
+        filter.addAction(Constant.ACTION_PLAY_MUSIC);
         registerReceiver(mReceiver, filter);
     }
 

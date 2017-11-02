@@ -50,8 +50,7 @@ public class PlaySongPagerAdapter extends FragmentStatePagerAdapter {
                     fragListSong.setArguments(bundle);
                     return fragListSong;
                 case 1:
-                    Log.e("Index", mIndex + "");
-                    bundle.putString("index", mList.get(mIndex).getmSongID() + "");
+                    bundle.putString(Constant.INDEX, mList.get(mIndex).getmSongID() + "");
                     fragCoverAlbum.setArguments(bundle);
                     return fragCoverAlbum;
             }

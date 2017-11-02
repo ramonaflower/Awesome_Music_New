@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.ramona.music_player.Entities.AlbumEntities;
 import com.example.ramona.music_player.Entities.SongEntities;
 
 import java.util.ArrayList;
@@ -164,6 +165,29 @@ public class MyDatabase extends SQLiteOpenHelper {
     public List<SongEntities> getListSongByArtistID(String id) {
         List<SongEntities> list = new ArrayList<>();
         String query = "SELECT  * FROM " + TABLE_SONG + " WHERE " + COLUMN_ARTIST_ID + " = " + id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                SongEntities entities = new SongEntities();
+                entities.setmSongID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_ID))));
+                entities.setmSongName(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_NAME)));
+                entities.setmAlbumName(cursor.getString(cursor.getColumnIndex(COLUMN_ALBUM_NAME)));
+                entities.setmArtistName(cursor.getString(cursor.getColumnIndex(COLUMN_ARTIST_NAME)));
+                entities.setmDuration(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_DURATION)));
+                entities.setmSongPath(cursor.getString(cursor.getColumnIndex(COLUMN_SONG_PATH)));
+                entities.setmAlbumID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_ALBUM_ID))));
+                entities.setmArtistID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_ARTIST_ID))));
+                list.add(entities);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return list;
+    }
+    public List<SongEntities> getListSongByName(String name){
+        List<SongEntities> list = new ArrayList<>();
+        String query = "SELECT  * FROM " + TABLE_SONG + " WHERE " + COLUMN_SONG_NAME + " = " + name;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {

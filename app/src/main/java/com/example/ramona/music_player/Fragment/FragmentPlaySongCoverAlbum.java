@@ -1,5 +1,9 @@
 package com.example.ramona.music_player.Fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,6 +19,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.ramona.music_player.Constant;
 import com.example.ramona.music_player.Entities.SongEntities;
 import com.example.ramona.music_player.Models;
 import com.example.ramona.music_player.R;
@@ -32,7 +37,26 @@ public class FragmentPlaySongCoverAlbum extends Fragment {
     private MyDatabase mDb;
     private byte[] mIMG;
     private SongEntities mSong;
-
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Constant.BROADCAST_UPDATE_UI)){
+                Bundle bundle = intent.getExtras();
+                SongEntities entities = bundle.getParcelable(Constant.UPDATE_SONG_INFO);
+                mIMG  = Models.getCoverAlbum(entities.getmSongPath());
+                if (mIMG!=null){
+                    Glide.with(getActivity().getApplicationContext()).asBitmap().load(mIMG).into(mImg_album_cover);
+                }
+            }
+            switch (intent.getAction()){
+                case Constant.ACTION_PLAY_MUSIC:
+                    mImg_album_cover.startAnimation(mRotateAnimation);
+                    break;
+                case Constant.ACTION_PAUSE_MUSIC:
+                    mImg_album_cover.clearAnimation();
+            }
+        }
+    };
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,8 +70,7 @@ public class FragmentPlaySongCoverAlbum extends Fragment {
         mRotateAnimation.setRepeatCount(Animation.INFINITE);
         initControl();
         if (getArguments()!=null) {
-            mID = getArguments().getString("index");
-            Log.e("ID", mID);
+            mID = getArguments().getString(Constant.INDEX);
             mSong = mDb.getSongByID(mID);
             mIMG = Models.getCoverAlbum(mSong.getmSongPath());
             if (mIMG!=null){
@@ -60,5 +83,21 @@ public class FragmentPlaySongCoverAlbum extends Fragment {
     private void initControl() {
         mImg_album_cover = mView.findViewById(R.id.img_cover_album);
         mImg_album_cover.startAnimation(mRotateAnimation);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.BROADCAST_UPDATE_UI);
+        filter.addAction(Constant.ACTION_PLAY_MUSIC);
+        filter.addAction(Constant.ACTION_PAUSE_MUSIC);
+        getActivity().registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(mReceiver);
     }
 }

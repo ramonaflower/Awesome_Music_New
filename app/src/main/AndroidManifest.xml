@@ -28,10 +28,13 @@
         <activity
             android:name=".Activity.AlbumDetail"
             android:theme="@style/AppThemeLightNoActionbar" />
-        <activity android:name=".Activity.ArtistDetail"
-            android:theme="@style/AppThemeLightNoActionbar"/>
+        <activity
+            android:name=".Activity.ArtistDetail"
+            android:theme="@style/AppThemeLightNoActionbar" />
+        <activity
+            android:name=".Activity.SearchActivity"
+            android:theme="@style/AppThemeLightNoActionbar" />
         <activity android:name=".Activity.Temp" />
-        <activity android:name=".Activity.SearchActivity"/>
     </application>
 
 </manifest>

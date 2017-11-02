@@ -16,9 +16,9 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter mAdapter;
 
-    private int dragFrom = -1;
-    private int temp = 0;
-    private int dragTo = -1;
+    private int mDragFrom = -1;
+    private int mTemp = 0;
+    private int mDragTo = -1;
 
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         mAdapter = adapter;
@@ -48,17 +48,17 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (source.getItemViewType() != target.getItemViewType()) {
             return false;
         }
-        if (dragFrom == -1){
-            temp = source.getAdapterPosition();
-            dragFrom = temp;
+        if (mDragFrom == -1){
+            mTemp = source.getAdapterPosition();
+            mDragFrom = mTemp;
         } else {
-            temp = source.getAdapterPosition();
+            mTemp = source.getAdapterPosition();
         }
 
-        dragTo = target.getAdapterPosition();
+        mDragTo = target.getAdapterPosition();
 
         // Notify the adapter of the move
-        mAdapter.onItemMove(temp, dragTo);
+        mAdapter.onItemMove(mTemp, mDragTo);
         return true;
     }
 
@@ -103,11 +103,11 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }
-        if (dragFrom != -1 && dragTo != -1) {
+        if (mDragFrom != -1 && mDragTo != -1) {
             Log.e("vào", "chưa");
-            mAdapter.onItemMoved(dragFrom, dragTo);
+            mAdapter.onItemMoved(mDragFrom, mDragTo);
         }
-        dragFrom = dragTo = -1;
+        mDragFrom = mDragTo = -1;
     }
 
 }

@@ -17,19 +17,17 @@
         <TextView
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="#fffefe"
+            android:textColor="@color/colorWhite"
             android:layout_marginLeft="@dimen/_10sdp"
             android:id="@+id/small_song_name"
-            android:text="Take A Bow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorWhite"
             android:layout_marginLeft="@dimen/_10sdp"
             android:id="@+id/small_artist_name"
-            android:text="Rianna"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

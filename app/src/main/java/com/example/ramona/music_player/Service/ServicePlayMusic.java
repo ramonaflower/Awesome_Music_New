@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class ServicePlayMusic extends Service {
     private MediaPlayer mMediaPlayer;
-    private List<SongEntities> mListSong = new ArrayList<SongEntities>();
+    private List<SongEntities> mListSong = new ArrayList<>();
     private IBinder mIBinder = new MyBinder();
     private int mIndex;
     private boolean mIsShuffle = false;
