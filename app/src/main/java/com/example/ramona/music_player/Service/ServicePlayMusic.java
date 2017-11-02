@@ -287,6 +287,9 @@ public class ServicePlayMusic extends Service {
         mMediaPlayer.start();
         mIntent = new Intent();
         mIntent.setAction(Constant.ACTION_PLAY_MUSIC);
+        if (mRemoteViews!=null){
+            updatePlayPauseBtnNotification();
+        }
         sendBroadcast(mIntent);
         sendBroadCastInfoSong();
         notification();
@@ -297,6 +300,9 @@ public class ServicePlayMusic extends Service {
 
         mIntent = new Intent();
         mIntent.setAction(Constant.ACTION_PAUSE_MUSIC);
+        if (mRemoteViews!=null){
+            updatePlayPauseBtnNotification();
+        }
         sendBroadcast(mIntent);
     }
 
