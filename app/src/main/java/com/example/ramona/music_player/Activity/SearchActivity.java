@@ -228,7 +228,7 @@ public class SearchActivity extends AppCompatActivity implements PlayControl{
         mAdapterListArtist.SetOnItemClickListener(new ClickListener() {
             @Override
             public void OnItemClick(int position) {
-                Intent intent = new Intent(SearchActivity.this, AlbumDetail.class);
+                Intent intent = new Intent(SearchActivity.this, ArtistDetail.class);
                 intent.putExtra(Constant.ARTIST_ENTITY, mListArtistAfterSearch.get(position));
                 startActivity(intent);
                 finish();
