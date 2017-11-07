@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
 
     private SearchView mSearchView;
     private FrameLayout mFrameLayout;
-    private List<SongEntities> mListSongInDevice = new ArrayList<SongEntities>();
-    private List<SongEntities> mListSongInDB = new ArrayList<SongEntities>();
-    private List<AlbumEntities> mListAlbum = new ArrayList<AlbumEntities>();
-    private List<ArtistEntities> mListArtist = new ArrayList<ArtistEntities>();
+    private List<SongEntities> mListSongInDevice = new ArrayList<>();
+    private List<SongEntities> mListSongInDB = new ArrayList<>();
+    private List<AlbumEntities> mListAlbum = new ArrayList<>();
+    private List<ArtistEntities> mListArtist = new ArrayList<>();
     private SongEntities mSongEntities;
     private AlbumEntities mAlbumEntities;
     private ArtistEntities mArtistEntities;
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new MyDatabase(MainActivity.this);
+        getSupportActionBar().setElevation(0);
         initControl();
         FragmentManager manager = getSupportFragmentManager();
         mPagerAdapter = new PagerAdapter(manager, mListSongInDB, mListAlbum, mListArtist, MainActivity.this);

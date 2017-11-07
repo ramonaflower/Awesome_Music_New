@@ -1,6 +1,5 @@
 package com.example.ramona.music_player.Activity;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -119,6 +118,7 @@ public class SearchActivity extends AppCompatActivity implements PlayControl{
                 }
             });
         }
+        mDB.close();
         GetListAlbum();
         GetListArtist();
 
@@ -369,7 +369,7 @@ public class SearchActivity extends AppCompatActivity implements PlayControl{
     protected void onResume() {
         super.onResume();
         final Handler mHandler = new Handler();
-        Runnable mRunable = new Runnable() {
+        Runnable mRunnable = new Runnable() {
             @Override
             public void run() {
                 if (!mIsBound) {
@@ -379,8 +379,8 @@ public class SearchActivity extends AppCompatActivity implements PlayControl{
                 }
             }
         };
-        mHandler.removeCallbacks(mRunable);
-        mHandler.post(mRunable);
+        mHandler.removeCallbacks(mRunnable);
+        mHandler.post(mRunnable);
     }
 
     @Override
