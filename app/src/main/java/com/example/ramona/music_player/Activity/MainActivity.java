@@ -1,7 +1,6 @@
 package com.example.ramona.music_player.Activity;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
     private Runnable mRunable;
     private Fragment mFragPlayControl;
     private FragmentTransaction mFT;
-
+    private boolean mDoubleBackToExitPressedOnce = false;
     private SearchView mSearchView;
     private FrameLayout mFrameLayout;
     private List<SongEntities> mListSongInDevice = new ArrayList<>();
@@ -270,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_search:
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
@@ -331,6 +330,25 @@ public class MainActivity extends AppCompatActivity implements PlayControl {
 //            mIsBound = false;
 //        }
 //    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDoubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.mDoubleBackToExitPressedOnce = true;
+        Toast.makeText(this, getString(R.string.exit_app), Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                mDoubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
 
     @Override
     protected void onDestroy() {

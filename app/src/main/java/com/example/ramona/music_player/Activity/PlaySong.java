@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import com.example.ramona.music_player.Adapter.PlaySongPagerAdapter;
 import com.example.ramona.music_player.Constant;
 import com.example.ramona.music_player.Entities.SongEntities;
+import com.example.ramona.music_player.Fragment.FragmentPlaySongCoverAlbum;
+import com.example.ramona.music_player.Fragment.FragmentPlaySongTransparent;
 import com.example.ramona.music_player.Interface.ClickFromTransparentToPlaySong;
 import com.example.ramona.music_player.R;
 import com.example.ramona.music_player.Service.ServicePlayMusic;
@@ -54,6 +57,8 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
     private double mDuration;
     private boolean mIsBound = false;
     private boolean mCheck;
+    private FragmentPlaySongTransparent mListPlaying = new FragmentPlaySongTransparent();
+    private FragmentPlaySongCoverAlbum mCoverAlbum = new FragmentPlaySongCoverAlbum();
     private Bundle mBundle;
     private Intent mPlayIntent;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -119,7 +124,7 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
         initControl();
         initData();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mAdapter = new PlaySongPagerAdapter(fragmentManager, mListSong, mIndex, mCheck);
+        mAdapter = new PlaySongPagerAdapter(fragmentManager, mListSong, mIndex, mCheck, mListPlaying, mCoverAlbum);
         mViewPager.setAdapter(mAdapter);
         mIndicator.setViewPager(mViewPager);
         if (mToolbar != null) {
@@ -312,7 +317,12 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
+        if (mListPlaying!=null && mListPlaying.getSelectMode()){
+            mListPlaying.resetView();
+            mListPlaying.setMode();
+        } else {
+            finish();
+        }
         return true;
     }
 

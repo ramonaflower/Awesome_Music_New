@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
-
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:orientation="horizontal"
@@ -15,12 +14,12 @@
             android:layout_gravity="center"
             android:padding="@dimen/_7sdp"
             xmlns:custom="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/equalizer_view"
+            android:id="@+id/equalizer_view1"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_30sdp"
             custom:foregroundColor="@color/colorWhite" />
         <TextView
-            android:id="@+id/text_song_index"
+            android:id="@+id/text_song_index1"
             android:gravity="center"
             android:textColor="@color/grey"
             android:textSize="@dimen/_15ssp"
@@ -34,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/text_name_of_song_transparent"
+                android:id="@+id/text_name_of_song_transparent1"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:maxLines="1"
                 android:ellipsize="end"
@@ -44,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/text_name_of_artist_transparent"
+                android:id="@+id/text_name_of_artist_transparent1"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:textSize="@dimen/_13ssp"
@@ -56,8 +55,9 @@
 
         </LinearLayout>
         <ImageView
-            android:id="@+id/img_more"
-            android:src="@drawable/ic_more"
+            android:layout_margin="@dimen/_10sdp"
+            android:id="@+id/img_move"
+            android:src="@drawable/ic_toc"
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="match_parent" />

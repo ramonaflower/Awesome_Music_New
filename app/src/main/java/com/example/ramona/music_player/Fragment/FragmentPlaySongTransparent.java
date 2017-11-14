@@ -10,11 +10,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ramona.music_player.Activity.MainActivity;
+import com.example.ramona.music_player.Activity.SearchActivity;
 import com.example.ramona.music_player.Adapter.AdapterTransparentListSong;
 import com.example.ramona.music_player.Constant;
 import com.example.ramona.music_player.Entities.SongEntities;
@@ -31,7 +35,7 @@ import java.util.List;
  * Created by Ramona on 10/20/2017.
  */
 
-public class FragmentPlaySongTransparent extends Fragment implements ClickListener, OnStartDragListener, AdapterTransparentListSong.updateChangeToFragment{
+public class FragmentPlaySongTransparent extends Fragment implements ClickListener, OnStartDragListener, AdapterTransparentListSong.updateChangeToFragment {
     private RecyclerView mRecyclerView;
     private AdapterTransparentListSong mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -39,23 +43,24 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
     private ItemTouchHelper mItemTouchHelper;
     private int mIndex;
     private boolean mCheck;
+    private boolean mSelectMode = false;
     private ClickFromTransparentToPlaySong mToPlaySong;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Constant.BROADCAST_UPDATE_UI)){
+            if (intent.getAction().equals(Constant.BROADCAST_UPDATE_UI)) {
                 Bundle bundle = intent.getExtras();
                 mAdapter.updateIndex(bundle.getInt(Constant.UPDATE_INDEX));
                 mAdapter.notifyDataSetChanged();
             }
-            switch (intent.getAction()){
+            switch (intent.getAction()) {
                 case Constant.ACTION_PLAY_MUSIC:
                     mCheck = true;
                     mAdapter.updateCheck(mCheck);
                     mAdapter.notifyDataSetChanged();
                     break;
                 case Constant.ACTION_PAUSE_MUSIC:
-                    mCheck =false;
+                    mCheck = false;
                     mAdapter.updateCheck(mCheck);
                     mAdapter.notifyDataSetChanged();
                     break;
@@ -64,6 +69,7 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
 
         }
     };
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -72,6 +78,12 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
         } catch (Exception e) {
             throw new ClassCastException(context.toString() + " must implement onSomeEventListener");
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -92,10 +104,28 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
         mRecyclerView.scrollToPosition(mIndex);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        setMode();
         return view;
     }
 
+    public void setMode(){
+        if (mSelectMode){
+            mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        } else {
+            mItemTouchHelper.attachToRecyclerView(null);
+        }
+    }
+
+    public void resetView() {
+        mSelectMode = !mSelectMode;
+        mAdapter.changeSelectMode();
+        mAdapter.notifyDataSetChanged();
+        //mRecyclerView.invalidate();
+    }
+
+    public boolean getSelectMode(){
+        return mSelectMode;
+    }
 
     @Override
     public void onResume() {
@@ -116,7 +146,8 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
 
     @Override
     public void OnLongItemClick(int position) {
-
+        resetView();
+        setMode();
     }
 
     @Override
@@ -134,5 +165,19 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
     public void getListUpdate(List<SongEntities> list, int index) {
         mToPlaySong.updateListSong(list, index);
     }
+
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        getActivity().getMenuInflater().inflate(R.menu.menu_search, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.action_search:
+//                resetView();
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 }

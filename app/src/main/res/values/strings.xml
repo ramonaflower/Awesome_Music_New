@@ -7,4 +7,5 @@
     <string name="selection">!= 0</string>
     <string name="no_audio_file">Dont have any audio file in your device!</string>
     <string name="number_of_album_artist">%2$d Album | %2$d Song</string>
+    <string name="exit_app">Press back again to exit !</string>
 </resources>

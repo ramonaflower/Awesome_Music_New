@@ -22,12 +22,15 @@ public class PlaySongPagerAdapter extends FragmentStatePagerAdapter {
     private List<SongEntities> mList = new ArrayList<SongEntities>();
     private int mIndex;
     private boolean mCheck;
+    private Fragment mListPlaying, mCoverAlbum;
 
-    public PlaySongPagerAdapter(FragmentManager fm, List<SongEntities> mList, int mIndex, boolean mCheck) {
+    public PlaySongPagerAdapter(FragmentManager fm, List<SongEntities> mList, int mIndex, boolean mCheck, Fragment mListPlaying, Fragment mCoverAlbum) {
         super(fm);
         this.mList = mList;
         this.mIndex = mIndex;
         this.mCheck = mCheck;
+        this.mListPlaying = mListPlaying;
+        this.mCoverAlbum = mCoverAlbum;
     }
 
     @Override
@@ -38,25 +41,25 @@ public class PlaySongPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragListSong = new FragmentPlaySongTransparent();
-        Fragment fragCoverAlbum = new FragmentPlaySongCoverAlbum();
+        Fragment fragment = new Fragment();
         Bundle bundle = new Bundle();
         if (mList.size() > 0) {
             switch (position) {
                 case 0:
+                    fragment = mListPlaying;
                     bundle.putParcelableArrayList(Constant.PLAYSONG_TO_TRANSPARENT_FRAGMENT, (ArrayList<SongEntities>) mList);
                     bundle.putInt(Constant.INDEX_SONG_TO_TRANSPARENT_FRAGMENT, mIndex);
                     bundle.putBoolean(Constant.IS_PLAYING, mCheck);
-                    fragListSong.setArguments(bundle);
-                    return fragListSong;
+                    break;
                 case 1:
+                    fragment = mCoverAlbum;
                     bundle.putString(Constant.INDEX, mList.get(mIndex).getmSongID() + "");
-                    fragCoverAlbum.setArguments(bundle);
-                    return fragCoverAlbum;
+                    break;
             }
 
         }
-        return fragListSong;
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
