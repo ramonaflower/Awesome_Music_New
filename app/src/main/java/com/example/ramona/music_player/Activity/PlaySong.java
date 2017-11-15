@@ -329,8 +329,8 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
         if (mListPlaying!=null && mListPlaying.getSelectMode()){
             mListPlaying.resetView();
             mListPlaying.setMode();
-            mListPlaying.setupOptionMenu();
-            mDetail.setVisible(true);
+            //mListPlaying.setupOptionMenu();
+            //mDetail.setVisible(true);
         } else {
             finish();
         }
@@ -353,7 +353,7 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
 
     @Override
     public void updateOptionMenu() {
-        mDetail.setVisible(false);
+        //mDetail.setVisible(false);
     }
 
     //    private boolean isMyServiceRunning(Class<?> serviceClass) {

@@ -157,8 +157,8 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
     public void OnLongItemClick(int position) {
         resetView();
         setMode();
-        setupOptionMenu();
-        mToPlaySong.updateOptionMenu();
+//        setupOptionMenu();
+//        mToPlaySong.updateOptionMenu();
     }
 
     @Override
