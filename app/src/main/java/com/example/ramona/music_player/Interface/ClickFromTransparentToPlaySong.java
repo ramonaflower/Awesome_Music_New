@@ -11,4 +11,5 @@ import java.util.List;
 public interface ClickFromTransparentToPlaySong {
     void clickToPlaySong(int position);
     void updateListSong(List<SongEntities> list, int index);
+    void updateOptionMenu();
 }

@@ -14,6 +14,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -46,6 +48,7 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
     private ViewPager mViewPager;
     private InkPageIndicator mIndicator;
     private SeekBar mSeekBar;
+    private MenuItem mDetail;
     private PlaySongPagerAdapter mAdapter;
     private List<SongEntities> mListSong = new ArrayList<>();
     private Runnable mUpdateSeekBar;
@@ -282,6 +285,12 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_play_song, menu);
+        mDetail = menu.findItem(R.id.action_more);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onStart() {
@@ -320,6 +329,8 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
         if (mListPlaying!=null && mListPlaying.getSelectMode()){
             mListPlaying.resetView();
             mListPlaying.setMode();
+            mListPlaying.setupOptionMenu();
+            mDetail.setVisible(true);
         } else {
             finish();
         }
@@ -338,6 +349,11 @@ public class PlaySong extends AppCompatActivity implements ClickFromTransparentT
     public void updateListSong(List<SongEntities> list, int index) {
         mServicePlayMusic.getListSong(list);
         mServicePlayMusic.getIndex(index);
+    }
+
+    @Override
+    public void updateOptionMenu() {
+        mDetail.setVisible(false);
     }
 
     //    private boolean isMyServiceRunning(Class<?> serviceClass) {

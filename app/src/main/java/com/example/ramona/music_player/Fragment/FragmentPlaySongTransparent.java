@@ -40,6 +40,7 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
     private AdapterTransparentListSong mAdapter;
     private LinearLayoutManager mLayoutManager;
     private List<SongEntities> mList = new ArrayList<>();
+    private MenuItem mDeleteSongFromList;
     private ItemTouchHelper mItemTouchHelper;
     private int mIndex;
     private boolean mCheck;
@@ -83,7 +84,7 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -113,6 +114,14 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
         } else {
             mItemTouchHelper.attachToRecyclerView(null);
+        }
+    }
+
+    public void setupOptionMenu(){
+        if (mSelectMode){
+            mDeleteSongFromList.setVisible(true);
+        } else {
+            mDeleteSongFromList.setVisible(false);
         }
     }
 
@@ -148,6 +157,8 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
     public void OnLongItemClick(int position) {
         resetView();
         setMode();
+        setupOptionMenu();
+        mToPlaySong.updateOptionMenu();
     }
 
     @Override
@@ -166,18 +177,21 @@ public class FragmentPlaySongTransparent extends Fragment implements ClickListen
         mToPlaySong.updateListSong(list, index);
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        getActivity().getMenuInflater().inflate(R.menu.menu_search, menu);
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.action_search:
-//                resetView();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_sort_list_song, menu);
+        mDeleteSongFromList = menu.findItem(R.id.action_delete);
+        mDeleteSongFromList.setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_delete:
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

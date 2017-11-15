@@ -225,12 +225,12 @@ public class AdapterTransparentListSong extends RecyclerView.Adapter<RecyclerVie
             mTextArtistName1 = itemView.findViewById(R.id.text_name_of_artist_transparent1);
             mImageMove = itemView.findViewById(R.id.img_move);
             mEqualizerView1 = itemView.findViewById(R.id.equalizer_view1);
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mListener.OnItemClick(getLayoutPosition());
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
         }
     }
 
